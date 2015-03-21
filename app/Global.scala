@@ -1,5 +1,6 @@
 import play.api.mvc.WithFilters
 import play.api.{Application, GlobalSettings}
+import play.Play
 
 object Global extends WithFilters() with GlobalSettings {
 
@@ -7,6 +8,9 @@ object Global extends WithFilters() with GlobalSettings {
     super.onStart(app)
 
     skinny.DBSettings.initialize()
+    if (Play.isDev()) {
+      skinny.dbmigration.DBMigration.migrate()
+    }
   }
 }
 
